@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - Figure{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center my-3"> Détails d'une figure</h1>
+    <hr>
+    <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-light mb-3 rounded">
+                    <div class="card-header text-center">
+                    {{figure.name}}
+                    </div>
+                    <img src="http://placehold.it/300x200" alt="main-image">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Figure de Lissajou
+                        </h4>
+                        <p class="card-text ">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </p>
+                        <a href="{{ path('homepage') }}" class="btn btn-primary">Retour</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}

@@ -25,9 +25,14 @@ class Figure
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mainImage;
 
     /**
      * @ORM\Column(type="datetime")
@@ -48,11 +53,6 @@ class Figure
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="figure", orphanRemoval=true)
      */
     private $messages;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Picture::class, cascade={"persist", "remove"})
-     */
-    private $mainImage;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="figures")
@@ -92,6 +92,18 @@ class Figure
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMainImage(): ?string
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?string $mainImage): self
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }
@@ -197,18 +209,6 @@ class Figure
                 $message->setFigure(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getMainImage(): ?Picture
-    {
-        return $this->mainImage;
-    }
-
-    public function setMainImage(?Picture $mainImage): self
-    {
-        $this->mainImage = $mainImage;
 
         return $this;
     }

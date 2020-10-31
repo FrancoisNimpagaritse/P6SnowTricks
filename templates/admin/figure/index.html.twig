@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration figures{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row py-3 pl-3">
+        <div class="col-md-5 bg-primary text-white rounded">   
+            <h1>Nos magnifiques figures !</h1>
+        </div>
+    </div>
+    <div style="height:3px;"></div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Image principale</th>
+                <th>Dernière mis à jour</th>
+                <th>Nombre d'images</td>
+                <th>Nombre de vidéos</td>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for figure in figures %}
+            <tr>
+                <td>{{figure.id}}</td>
+                <td>{{figure.name}}</td>
+                <td>{{figure.category.name}}</td>
+                <td>{{figure.mainImage}}</td>
+                <td>{{figure.updatedAt |date("d/m/Y")}}</td>
+                <td><span class="badge badge-primary rounded">{{figure.pictures | length}}</span></td>
+                <td><span class="badge badge-info rounded">{{figure.videos | length}}</span></td>
+                <td>
+                    <a href="#" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

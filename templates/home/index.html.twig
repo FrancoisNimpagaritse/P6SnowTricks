@@ -3,25 +3,31 @@
 {% block title %}Snowtricks - Accueil{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="text-center my-3"> Figures magnifiques !</h1>
-    <hr>
+<div class="container">            
+    <div class="row py-5 pb-3 pl-3">
+        <div class="col-md-5 bg-primary text-white rounded">   
+            <h1>Figures magnifiques !</h1>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="col text-center m-auto pt-3">            
+            <a href="{{ path('admin_figure_create') }}" class="btn btn-success rounded">Ajouter une figure</a>
+        </div>
+    </div>
     <div class="row">
         {% for figure in figures %}
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card bg-light mb-3 rounded">
-                    <div class="card-header text-center">
-                    {{figure.name}}
-                    </div>
-                    <img src="http://placehold.it/300x200" alt="main-image">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Un text bidon!
-                        </h4>
+                                    
+                    <img src="{{ asset('images/' ~ figure.mainImage)}}" alt="main-image">
+                    <div class="card-body text-center">                        
                         <p class="card-text ">
                         {{figure.description}}
                         </p>
-                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-primary">Voir détails ..</a>
+                        
+                        <a href="{{ path('figure_show', {'id': figure.id})}}">{{figure.name}}</a>
+                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                       
                     </div>
                 </div>
             </div>

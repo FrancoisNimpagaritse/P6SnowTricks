@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Figure;
 use App\Repository\FigureRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -28,14 +29,12 @@ class HomeController extends AbstractController
     /**
      * Permet d'afficher les détails d'une figure
      * 
-     * @Route("/show/{id}", name="figure_show")
+     * @Route("figure/show/{id}", name="figure_show")
      * 
      * @return Response
      */
-    public function show($id, FigureRepository $repo)
+    public function show(Figure $figure)
     {
-        $figure = $repo->findOneById($id);
-
         return $this->render('home/show.html.twig', [
             'figure' => $figure,
         ]);

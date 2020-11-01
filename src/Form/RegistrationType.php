@@ -20,6 +20,7 @@ class RegistrationType extends ApplicationType
             ->add('email', EmailType::class, $this->getAttributs("Adresse email", "Votre adresse email.."))
             ->add('imageName', TextType::class, $this->getAttributs("Photo", "Le nom du fichier de votre photo.."))
             ->add('hash', PasswordType::class, $this->getAttributs("Mot de passe", "Choisissez un mot de passe fort !"))
+            ->add("passwordConfirm", PasswordType::class, $this->getAttributs("Confirmation mot de passe", "Veuillez confirmer votre mot de passe !"))
         ;
     }
 

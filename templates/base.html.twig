@@ -38,7 +38,7 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.firstname }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Mon compte</a>
-                            <a class="dropdown-item" href="#">Modifier profil</a>                        
+                            <a class="dropdown-item" href="{{ path('account_profile') }}">Modifier profil</a>                        
                         </div>
                     </li>
                     <li class="nav-item">
@@ -55,8 +55,23 @@
             </div>
         </nav>
 
+        {% for label, messages in app.flashes %}
+            <div class="container py-3">
+                <div class="alert alert-{{label}}">
+                    {% for message in messages %}
+                        <p>{{ message | raw }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
         {% block body %}{% endblock %}
 
+        <div class="text-center p-3 m-3 bg-light">
+            <footer id="footer">
+                <p>Copyright! SnowTricks, &copy 2020</p>
+            </footer>
+        </div>
         <script src="/js/jquery.min.js"></script>
         <script src="/js/popper.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>

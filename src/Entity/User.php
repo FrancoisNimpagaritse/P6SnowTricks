@@ -7,9 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * 
+ * @UniqueEntity(
+ * fields={"email"},
+ * message="Cet utilisateur existe déjà, merci de choisir une autre adresse email !")
  */
 class User implements UserInterface
 {
@@ -22,16 +28,22 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
+     * 
+     * @Assert\NotBlank()
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * 
+     * @Assert\NotBlank()
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Assert\Email(message="Veuillez renseigner un email valide !")
      */
     private $email;
 
@@ -54,6 +66,12 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $hash;
+
+    /**
+     * @Assert\EqualTo(propertyPath="hash", message="Les deux mots de passe ne sont pas identiques !")
+     *
+     */
+    public $passwordConfirm;
 
     public function __construct()
     {

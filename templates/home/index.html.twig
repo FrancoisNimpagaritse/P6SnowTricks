@@ -9,8 +9,10 @@
             <h1>Figures magnifiques !</h1>
         </div>
         <div class="col-md-5"></div>
-        <div class="col text-center m-auto pt-3">            
+        <div class="col text-center m-auto pt-3"> 
+        {% if(app.user) %}           
             <a href="{{ path('admin_figure_create') }}" class="btn btn-success rounded">Ajouter une figure</a>
+        {% endif %}
         </div>
     </div>
     <div class="row">

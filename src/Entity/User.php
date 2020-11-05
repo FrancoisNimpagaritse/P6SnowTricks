@@ -73,9 +73,21 @@ class User implements UserInterface
      */
     public $passwordConfirm;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $figures;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="users")
+     */
+    private $userRoles;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->figures = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,7 +200,13 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        $roles = $this->userRoles->map(function($role){
+            return $role->getTitle();
+        })->toArray();
+
+        $roles[] = 'ROLE_USER';
+
+        return $roles;
     }
 
     public function getPassword()
@@ -204,4 +222,61 @@ class User implements UserInterface
     }
 
     public function eraseCredentials() {}
+
+    /**
+     * @return Collection|Figure[]
+     */
+    public function getFigures(): Collection
+    {
+        return $this->figures;
+    }
+
+    public function addFigure(Figure $figure): self
+    {
+        if (!$this->figures->contains($figure)) {
+            $this->figures[] = $figure;
+            $figure->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFigure(Figure $figure): self
+    {
+        if ($this->figures->removeElement($figure)) {
+            // set the owning side to null (unless already changed)
+            if ($figure->getAuthor() === $this) {
+                $figure->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getUserRoles(): Collection
+    {
+        return $this->userRoles;
+    }
+
+    public function addUserRole(Role $userRole): self
+    {
+        if (!$this->userRoles->contains($userRole)) {
+            $this->userRoles[] = $userRole;
+            $userRole->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Role $userRole): self
+    {
+        if ($this->userRoles->removeElement($userRole)) {
+            $userRole->removeUser($this);
+        }
+
+        return $this;
+    }
 }

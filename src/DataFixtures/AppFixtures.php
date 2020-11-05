@@ -3,12 +3,13 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
+use App\Entity\Role;
 use App\Entity\User;
-use App\Entity\Category;
+use App\Entity\Video;
 use App\Entity\Figure;
 use App\Entity\Message;
 use App\Entity\Picture;
-use App\Entity\Video;
+use App\Entity\Category;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -24,6 +25,23 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr-FR');
+
+        //Nous gérons les rôles
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+
+        $manager->persist($adminRole);
+
+        $adminUser = new User();
+        $adminUser->setFirstname('Francis')
+                  ->setLastname('Biko')
+                  ->setEmail('franimpa@yahoo.fr')
+                  ->setHash($this->encoder->encodePassword($adminUser, 'password'))
+                  ->setImageName('myimage')
+                  ->setUpdatedAt(new \DateTime())
+                  ->addUserRole($adminRole);
+
+        $manager->persist($adminUser);
 
         //Nous gérons les utilisateurs
         $users = [];
@@ -60,12 +78,15 @@ class AppFixtures extends Fixture
         for($i = 1; $i <= 5 ; $i++)
         {
             $figure = new Figure();
-    
+            
+            $usuario = $users[mt_rand(0,4)];
             $cat = $categories[mt_rand(0,1)];
             $figure->setName($faker->name())
                    ->setDescription($faker->sentence())
                    ->setUpdatedAt(new \DateTime('now'))
-                   ->setCategory($cat);
+                   ->setMainImage('mainImage.png')
+                   ->setCategory($cat)
+                   ->setAuthor($usuario);
 
             $manager->persist($figure);
             $figures[] = $figure;

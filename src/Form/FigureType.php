@@ -17,7 +17,6 @@ class FigureType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('updatedAt')
             ->add('mainImage', FileType::class, ['label' =>  'Image principale', 'mapped' => false])            
             ->add('category', EntityType::class, [
             'class' =>  Category::class,

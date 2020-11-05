@@ -57,6 +57,10 @@ class AdminFigureController extends AbstractController
             $manager->persist($figure);
 
             $manager->flush();
+
+            $this->addFlash('success', 'La figure a été ajoutée avec succès !');
+
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('admin/figure/new.html.twig', [

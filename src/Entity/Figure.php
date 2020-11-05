@@ -25,9 +25,14 @@ class Figure
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mainImage;
 
     /**
      * @ORM\Column(type="datetime")
@@ -50,15 +55,16 @@ class Figure
     private $messages;
 
     /**
-     * @ORM\OneToOne(targetEntity=Picture::class, cascade={"persist", "remove"})
-     */
-    private $mainImage;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="figures")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="figures")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     public function __construct()
     {
@@ -92,6 +98,18 @@ class Figure
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMainImage(): ?string
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?string $mainImage): self
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }
@@ -201,18 +219,6 @@ class Figure
         return $this;
     }
 
-    public function getMainImage(): ?Picture
-    {
-        return $this->mainImage;
-    }
-
-    public function setMainImage(?Picture $mainImage): self
-    {
-        $this->mainImage = $mainImage;
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -221,6 +227,18 @@ class Figure
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

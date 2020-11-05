@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - Accueil{% endblock %}
+
+{% block body %}
+<div class="container">            
+    <div class="row py-5 pb-3 pl-3">
+        <div class="col-md-5 bg-primary text-white rounded">   
+            <h1>Figures magnifiques !</h1>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="col text-center m-auto pt-3"> 
+        {% if(app.user) %}           
+            <a href="{{ path('admin_figure_create') }}" class="btn btn-success rounded">Ajouter une figure</a>
+        {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        {% for figure in figures %}
+            <div class="col-md-4">
+                <div class="card bg-light mb-3 rounded">
+                                    
+                    <img src="{{ asset('images/' ~ figure.mainImage)}}" alt="main-image">
+                    <div class="card-body text-center">                        
+                        <p class="card-text ">
+                        {{figure.description}}
+                        </p>
+                        
+                        <a href="{{ path('figure_show', {'id': figure.id})}}">{{figure.name}}</a>
+                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                       
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

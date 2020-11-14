@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FigureRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +25,11 @@ class Figure
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $slug;
+    
     /**
      * @ORM\Column(type="text")
      */
@@ -239,6 +245,26 @@ class Figure
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slug
+     */ 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of slug
+     *
+     * @return  self
+     */ 
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

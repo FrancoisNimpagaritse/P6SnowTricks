@@ -29,7 +29,7 @@ class HomeController extends AbstractController
     /**
      * Permet d'afficher les détails d'une figure
      * 
-     * @Route("figure/show/{id}", name="figure_show")
+     * @Route("figure/show/{slug}", name="figure_show")
      * 
      * @return Response
      */

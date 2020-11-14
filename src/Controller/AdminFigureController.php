@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Form\FigureType;
 use App\Repository\FigureRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdminFigureController extends AbstractController
 {
@@ -34,15 +36,20 @@ class AdminFigureController extends AbstractController
      * 
      * @return Response
      */
-    public function create(Request $request, EntityManagerInterface $manager)
+    public function create(Request $request, EntityManagerInterface $manager, SluggerInterface $slugger)
     {
         $figure = new Figure();
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $slug = $slugger->slug($form->get('name')->getData())->lower();
+            $figure->setSlug($slug);
+            $figure->setUpdatedAt(new \DateTime());
+            $figure->setAuthor($this->getUser());
+
             //On récupère le fichier d'image
             $file = $form->get('mainImage')->getData();
             //On récupère son ancien nom

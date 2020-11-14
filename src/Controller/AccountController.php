@@ -2,19 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\PasswordUpdate;
 use App\Entity\User;
 use App\Form\AccountType;
-use App\Form\PasswordUpdateType;
+use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Form\PasswordUpdateType;
+use Symfony\Component\Mime\Email;
+use App\Repository\UserRepository;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AccountController extends AbstractController
 {
@@ -55,25 +58,42 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
+    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
     {
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $user->setUpdatedAt(new \DateTime());
 
+            //On génère le token d'activation
+            $user->setActivationToken(md5(uniqid()));
+
             $manager->persist($user);
             $manager->flush();
 
+            
+            //On crée le message et on envoie le mail
+            $email = (new Email())
+            //On renseigne l'expéditeur
+                    ->from('franimpa@yahoo.fr')
+            //On renseigne le destinataire
+                    ->to($user->getEmail())
+            //On renseigne l'objet
+                    ->subject('Activation de votre compte')
+                    ->html($this->renderView('account/activation.html.twig', ['token' => $user->getActivationToken()]),
+                        'UTF-8'
+                        );
+
+            $mailer->send($email);
+
             $this->addFlash(
                 'success',
-                "Votre compte a bien été créé. Vous pouvez maintenant vous connecter !"
+                "Votre compte a bien été créé. Un mail vient de vous être envoyé, veuillez le consulter pour activer votre compte !"
             );
 
             return $this->redirectToRoute('account_login');
@@ -97,8 +117,7 @@ class AccountController extends AbstractController
         $form = $this->createForm(AccountType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($user);
             $manager->flush();
 
@@ -127,10 +146,8 @@ class AccountController extends AbstractController
         $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
         $form->handleRequest($request);
         //Ve=érifier que le oldPassword du formulaire correspond au hash de li'utilisateur
-        if($form->isSubmitted() && $form->isValid())
-        {
-            if(!password_verify($passwordUpdate->getOldPassword(), $user->getHash()))
-            {
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
                 //On gère l'erreur
                 $form->get('oldPassword')->addError(new FormError("Le mot de passe saisi ne cprrespond pas à votre mot de passe actuel !"));
             } else {
@@ -152,5 +169,34 @@ class AccountController extends AbstractController
         return $this->render('account/password.html.twig', [
                 'form'  =>  $form->createView()
         ]);
+    }
+
+    /**
+     * Permet d'activer le compte du client
+     * @Route("/activation/{token}", name="account_activation")
+     * 
+     * @return Response
+     */
+    public function activate($token, UserRepository $repo, EntityManagerInterface $manager)
+    {
+        //On vérifie si l'utilisateur a ce token
+        $user = $repo->findOneBy(['activationToken' => $token]);
+
+        //Si aucun utilisateur n'a pas ce token erreur 404
+        if (!$user) {
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+        }
+
+        //On supprime le token après activation
+        $user->setActivationToken(null);
+
+        $manager->persist($user);
+        $manager->flush();
+
+        $this->addFlash('success', 'Vous avez bien activé votre compte. Vous pouvez maintenant vous connectez.');
+
+
+
+        return $this->redirectToRoute('account_login');
     }
 }

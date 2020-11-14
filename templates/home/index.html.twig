@@ -26,9 +26,9 @@
                         {{figure.description}}
                         </p>
                         
-                        <a href="{{ path('figure_show', {'id': figure.id})}}">{{figure.name}}</a>
-                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
-                        <a href="{{ path('figure_show', {'id': figure.id})}}" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                        <a href="{{ path('figure_show', {'slug': figure.slug})}}">{{figure.name}}</a>
+                        <a href="{{ path('figure_show', {'slug': figure.slug})}}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('figure_show', {'slug': figure.slug})}}" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
                        
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Figure;
+use App\Entity\Picture;
 use App\Form\FigureType;
 use App\Repository\FigureRepository;
 use DateTime;
@@ -32,7 +33,7 @@ class AdminFigureController extends AbstractController
 
     /**
      * Permet de créer une figure
-     * @Route("admin/figure/new", name="admin_figure_create")
+     * @Route("/figure/new", name="admin_figure_create")
      * 
      * @return Response
      */
@@ -42,8 +43,14 @@ class AdminFigureController extends AbstractController
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
-
+        //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach($figure->getPictures() as $picture)
+            {
+                $picture->setName('mon_image.png');
+                $picture->setFigure($figure);
+                $manager->persist($picture);
+            }
 
             $slug = $slugger->slug($form->get('name')->getData())->lower();
             $figure->setSlug($slug);

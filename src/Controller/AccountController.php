@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AccountType;
+use App\Form\ResetPassType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
@@ -15,9 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Proxies\__CG__\App\Entity\User as EntityUser;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class AccountController extends AbstractController
 {
@@ -198,5 +203,102 @@ class AccountController extends AbstractController
 
 
         return $this->redirectToRoute('account_login');
+    }
+
+    /**
+     * Permet de demander à réinitimaiser son mot de passe
+     * @Route("/forgotten-password", name="account_forgotten_password")
+     * 
+     * @return Response
+     */
+    public function forgottenPassword(Request $request, UserRepository $repo,
+    MailerInterface $mailer, TokenGeneratorInterface $tokenGenerator, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(ResetPassType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            //on cherche si un utilisateur possède cet email
+            $user = $repo->findOneByEmail($data['email']);
+            //Si l'utilisateur n'existe pas 404
+            if (!$user) {
+                //On envoie un message flash
+                $this->addFlash('danger', 'Cette adresse email n\'existe pas !');
+
+                return $this->redirectToRoute('account_login');
+            }
+            //On génère un token
+            $token = $tokenGenerator->generateToken();
+
+            try {
+                $user->setResetToken($token);
+                $manager->persist($user);
+                $manager->flush();
+
+            } catch(\Exception $e) {
+                $this->addFlash('warning', 'Une erreur est survenue' . $e->getMessage());
+                return $this->redirectToRoute('account_login');
+            }
+
+            //On génère l'url de réinitialisation
+            $url = $this->generateUrl('account_reset-password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            //On envoie le message
+            //2. On envoie le mail
+            $email = (new Email())
+                    ->from('franimpa@yahoo.fr')
+                    ->to($user->getEmail())
+                    ->subject('Mot de passe oublié')
+                    ->text('Une demande de réinitialisation du mot de passe a été effectuée 
+                    pour le site snowtricks.franimpa.fr, veuillez cliquer sur le lien
+                    suivant : ' . $url );                    
+                  
+            $mailer->send($email);
+
+            $this->addFlash('success', 'Un mail de réinitialisation de mot de passe vient de vous être envoyé.');
+
+            return $this->redirectToRoute('account_login');
+        }
+
+        return $this->render('account/forgottenpassword.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Permet d'initialiser un mot de passe
+     * @Route("/reset-password/{token}", name="account_reset-password")
+     * 
+     * @return Response
+     */
+    public function resetpassword($token, Request $request, UserRepository $repo, 
+    UserPasswordEncoderInterface $encoder, EntityManagerInterface $manager)
+    {
+        //On cherche l'utilisateur avec le token fourni
+        $user = $repo->findOneBy(['resetToken' => $token]);
+
+        if (!$user) {
+            $this->addFlash('danger', 'Token inconnu !');
+
+            return $this->redirectToRoute('account_login');
+        }
+
+        if ($request->isMethod('POST')) {
+            //On supprime le token
+            $user->setResetToken(null);
+
+            //On reinitialise le mot de passe
+            $user->setHash($encoder->encodePassword($user, $request->request->get('password')));
+            
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash('success', 'Mot de passe modifié avec succès.');
+
+            return $this->redirectToRoute('account_login');
+        }
+
+        return $this->render('account/resetpassword.html.twig', ['token' => $token]);
     }
 }

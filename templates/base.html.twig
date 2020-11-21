@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Bienvenue sur SnowTricks!{% endblock %}</title>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{ asset('css/myStyle.css') }}">
         <script src="https://use.fontawesome.com/35f10bd2c8.js"></script>
         {% block stylesheets %}{% endblock %}
     </head>
@@ -18,10 +19,13 @@
                 
                 <ul class="navbar-nav ml-auto pr-5">
                 
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ path('homepage') }}">Accueil
                         <span class="sr-only">(current)</span>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">|</a>
                     </li>
                     {% if app.user %}
                     <li class="nav-item dropdown">
@@ -34,11 +38,17 @@
                         <a class="dropdown-item" href="{{ path('account_logout') }}">Ajouter vidéo</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">|</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.firstname }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ path('account_profile') }}">Modifier profil</a>                        
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">|</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('account_logout') }}">Déconnexion</a>
@@ -48,9 +58,7 @@
                         <a class="nav-link" href="{{ path('account_login') }}">Connexion</a>
                     </li>
                 {% endif %}
-
                 </ul>
-                
             </div>
         </nav>
 
@@ -71,9 +79,9 @@
                 <p>Copyright! SnowTricks, &copy 2020</p>
             </footer>
         </div>
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/popper.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -45,8 +45,8 @@ class HomeController extends AbstractController
     {
         $msg = new Message();
         $messages = $repoMsg->findBy(['figure' => $figure->getId()], ['createdAt' => 'DESC']);
-        $images = $repoPic->findAll();
-
+        $pictures = $repoPic->findBy(['figure' => $figure]);
+        
         $form = $this->createForm(MessageType::class, $msg);
         $form->handleRequest($request);
 
@@ -65,7 +65,7 @@ class HomeController extends AbstractController
             'figure' => $figure,
             'messages' => $messages,
             'form'  => $form->createView(),
-            'images' => $images
+            'pictures' => $pictures
         ]);
     }
 }

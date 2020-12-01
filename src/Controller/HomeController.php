@@ -27,8 +27,9 @@ class HomeController extends AbstractController
      */
     public function index(FigureRepository $repo)
     {
-        $figures = $repo->findAll();
-
+        // Get 15 figures from position 0
+        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 15, 0);
+        
         return $this->render('home/index.html.twig', [
             'figures' => $figures,
         ]);

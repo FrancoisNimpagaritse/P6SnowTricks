@@ -25,7 +25,7 @@
                     <div class="carousel-inner">
                         {% for picture in figure.pictures %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
-                            <img src="{{ asset('images/' ~ picture.name)}}" class="d-block w-100" alt="{{picture.caption}}">
+                            <img src="{{ asset('images/' ~ picture.name)}}" class="d-block w-100 card-img" alt="{{picture.caption}}">
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>First slide label</h5>
                                 <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
@@ -43,7 +43,7 @@
                     </a>
                 </div>
 
-                <a href="{{ path('homepage') }}" class="btn btn-primary">Retour accueil</a>
+                <a href="{{ path('homepage') }}" class="btn btn-primary m-5">Retour accueil</a>
             </div>
         </div>
     </div>
@@ -61,7 +61,8 @@
         {{form_end(form)}}            
     </div>
     <div class="container">
-    <h3 class="text-center">Commentaires sur la figure</h3>
+    {% if (figure.messages | length) > 0 %}
+    <h4 class="text-center">Commentaires sur la figure</h4>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -83,6 +84,9 @@
         {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <p><strong>Il n'y a pas encore de commentaires pour cette figure.</strong>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -47,30 +47,49 @@ class AdminFigureController extends AbstractController
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
-        
+        //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
+
+          //dd($form->get('pictures')->getData());
+            //dd($request->files->get('figure')['pictures']);
+            $i=0;
+            
             foreach($figure->getPictures() as $picture)
-            {
-                $picture->setName('mon_image.png');
+            {                
+                $uploadFile = $request->files->get('figure')['pictures'][$i]['name'];
+                
+                if ($uploadFile) {
+                    $newPictureFilename = $uploader->upload($uploadFile);
+                    $picture->setName($newPictureFilename);
+                }
+
                 $picture->setFigure($figure);
+                
                 $manager->persist($picture);
+                $i++;
             }
 
-            $figure->setAuthor($this->getUser());
-
-            //On récupère le fichier d'image
-            $file = $form->get('mainImage')->getData();
-
-            $newFilename = $uploader->upload($file);           
+            foreach($figure->getVideos() as $video)
+            {
+                $video->setFigure($figure);
+                $manager->persist($video);
+            }
             
-            //On renseigne le nom qui sera en BD
-            $figure->setMainImage($newFilename);
-
+            $figure->setAuthor($this->getUser());
+            
+            //On récupère le fichier d'image
+            $uploadMainFile = $form->get('mainImage')->getData();   
+            
+            if ($uploadMainFile) {
+                $newMainPictureFilename = $uploader->upload($uploadMainFile);
+                //On renseigne le nom qui sera en BD
+                $figure->setMainImage($newMainPictureFilename);
+            }
+            
             $manager->persist($figure);
-
             $manager->flush();
 
-            $this->addFlash('success', 'La figure a été ajoutée avec succès !');
+            $this->addFlash('success', 'La figure <strong>' . $figure->getName() . '</strong>, ses images ainsi que ses videos ont été ajoutées avec succès !');
 
             return $this->redirectToRoute('homepage');
         }
@@ -92,29 +111,44 @@ class AdminFigureController extends AbstractController
     {
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
-        dd($form->get('mainImage'));
-        if ($form->isSubmitted() && $form->isValid()) {
+        
+        if ($form->isSubmitted() && $form->isValid()) {            
+            $i=0;
             foreach($figure->getPictures() as $picture)
-            {
-                $picture->setName('mon_image.png');
+            {                
+                $uploadedFile = $request->files->get('figure')['pictures'][$i]['imageName'];
+                
+                if ($uploadedFile) {
+                    $newPictureFilename = $uploader->upload($uploadedFile);
+                    $picture->setName($newPictureFilename);
+                }
+
                 $picture->setFigure($figure);
+                
                 $manager->persist($picture);
+                $i++;
             }
 
+            foreach($figure->getVideos() as $video)
+            {
+                $video->setFigure($figure);
+                $manager->persist($video);
+            }
+            
             $figure->setAuthor($this->getUser());
-
+            
             //On récupère le fichier d'image
-            $file = $form->get('mainImage')->getData();
-
-            $newFilename = $uploader->upload($file);
-
-            $figure->setMainImage($newFilename);
-
+            $uploadedMainFile = $form->get('mainImg')->getData();           
+            if ($uploadedMainFile) {
+                $newMainPictureFilename = $uploader->upload($uploadedMainFile);
+                //On renseigne le nom qui sera en BD
+                $figure->setMainImage($newMainPictureFilename);
+            }
+            
             $manager->persist($figure);
-
             $manager->flush();
 
-            $this->addFlash('success', 'La figure a été modifiée avec succès !');
+            $this->addFlash('success', 'La figure <strong>' . $figure->getName() . '</strong> , ses images ainsi que ses videos ont été modifiées avec succès !');
 
             return $this->redirectToRoute('homepage');
         }

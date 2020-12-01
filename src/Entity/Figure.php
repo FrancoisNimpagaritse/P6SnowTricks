@@ -30,6 +30,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Le nom est obligatoire !")
      */
     private $name;
 
@@ -40,6 +41,7 @@ class Figure
     
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Le nom est obligatoire !")
      */
     private $description;
 
@@ -55,11 +57,13 @@ class Figure
 
     /**
      * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="figure", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $pictures;
 
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="figure", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $videos;
 

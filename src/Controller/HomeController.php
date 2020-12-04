@@ -36,6 +36,21 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Afficher encore 15 autres figures
+     * @Route("/{start}", name="loadMoreFigures", requirements={"start": "\d+"})
+     * 
+     * @return Response
+     */
+    public function loadMoreFigures(FigureRepository $repo, $start = 15)
+    {
+        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 15, $start);
+
+        return $this->render('home/loadMoreFigures.html.twig', [
+            'figures' => $figures
+        ]);
+    }
+
+    /**
      * Permet d'afficher les détails d'une figure
      * 
      * @Route("figure/show/{slug}", name="figure_show")

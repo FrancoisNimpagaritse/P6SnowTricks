@@ -158,4 +158,13 @@ class AdminFigureController extends AbstractController
             'figure' => $figure
         ]);
     }
+
+    /**
+     * Permet de supprimer une figure , ses images et ses vidéos
+     * @Route("/figure/delete/{slug}", name="figure_delete")
+     */
+    public function delete(Figure $figure)
+    {
+        //
+    }
 }

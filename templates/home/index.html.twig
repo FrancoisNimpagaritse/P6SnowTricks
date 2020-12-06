@@ -28,7 +28,7 @@
                         
                         <a href="{{ path('figure_show', {'slug': figure.slug})}}">{{figure.name}}</a>
                         <a href="{{ path('figure_edit', {'slug': figure.slug})}}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
-                        <a href="{{ path('figure_show', {'slug': figure.slug})}}" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                        <a href="{{ path('figure_delete', {'slug': figure.slug}) }}" class="btn btn-danger rounded"><i class="fa fa-trash"  onclick="return confirm(`Voulez vous réellement supprimer la figure : {{figure.name}} ?`)"></i></a>
                        
                     </div>
                 </div>
@@ -37,7 +37,7 @@
     </div>
 </div>
 <div class="text-center">
-    <a href="" id="loadMoreFigures" class=" btn btn-primary rounded">Afficher plus...</a>
+    <button href="" id="loadMoreFigures" class=" btn btn-primary rounded">Afficher plus...</button>
     <a href="#up" id="down" class="btn btn-primary fa fa-arrow-up float-right"></a>
 </div>
 {% endblock %}

@@ -3,42 +3,49 @@
 {% block title %}Snowtricks - Accueil{% endblock %}
 
 {% block body %}
-<div class="container-fluid">            
-    <div class="row py-5 pb-3 pl-3">
-        <div class="col-md-5 bg-primary text-white rounded">   
-            <h1>Figures magnifiques !</h1>
-        </div>
-        <div class="col-md-5"></div>
-        <div class="col text-center m-auto pt-3"> 
-        {% if(app.user) %}           
-            <a href="{{ path('figure_create') }}" class="btn btn-success rounded">Ajouter une figure</a>
-        {% endif %}
-        </div>
-        <div class="">
-            <p id="up" class="float-right"><a href="#down" class="btn btn-primary fa fa-arrow-down"></a></p>
-        </div>
+<div class="container-fluid">
+    <div class=" py-3 rounded text-center">
+        <img src="{{ asset('images/snowtricks-banner.jpg') }}" alt="Bannière" class="rounded img-fluid">
+    </div>        
+    <div class="row ">
+        <div class="col-md-8">
+        </div>  
+        <div class="col-md-3 text-center m-auto pb-3">
+            {% if(app.user) %}
+                <a href="{{ path('figure_create') }}" class="btn btn-success rounded">Ajouter une figure</a>
+            {% endif %}
+        </div>        
+        <div class="col m-auto pb-3">
+            <a href="#down" id="up" class="btn btn-primary fa fa-arrow-down float-right"></a>           
+        </div>        
     </div>
     <div id="figuresList" class="row">
         {% for figure in figures %}
             <div class="col-md-4">
                 <div class="card bg-light mb-3 rounded">
                                     
-                    <img src="{{ asset('images/' ~ figure.mainImage)}}" alt="main-image" class="card-img">
+                    <img src="{{ asset('images/' ~ figure.mainImage)}}" alt="main-image" height="300px" width="270px" class="card-img">
                     <div class="card-body text-center">                         
                         
                         <a href="{{ path('figure_show', {'slug': figure.slug})}}">{{figure.name}}</a>
-                        <a href="{{ path('figure_edit', {'slug': figure.slug})}}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
-                        <a href="{{ path('figure_delete', {'slug': figure.slug}) }}" class="btn btn-danger rounded"><i class="fa fa-trash"  onclick="return confirm(`Voulez vous réellement supprimer la figure : {{figure.name}} ?`)"></i></a>
-                       
+                        <a href="{{ path('figure_edit', {'slug': figure.slug})}}"><img src="{{ asset('images/pencil.png') }}" alt="Modifier"></a>
+                        <a href="{{ path('figure_delete', {'slug': figure.slug}) }}"><img src="{{ asset('images/trash.png') }}" alt="Supprimer" onclick="return confirm(`Voulez vous réellement supprimer la figure : {{figure.name}} ?`)"></a>                        
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
-</div>
-<div class="text-center">
-    <button href="" id="loadMoreFigures" class=" btn btn-primary rounded">Afficher plus...</button>
-    <a href="#up" id="down" class="btn btn-primary fa fa-arrow-up float-right"></a>
+
+    <div class="text-center">
+        <button href="" id="loadMoreFigures" class=" btn btn-primary rounded">Afficher plus...</button>
+        <a href="#up" id="down" class="btn btn-primary fa fa-arrow-up float-right d-none d-sm-block"></a>
+    </div>
+    <div class="d-block d-sm-none m-auto p-auto text-center">                          
+        <a href="{{ path('homepage') }}" class="btn btn-secondary fa fa-home float-left  d-block d-sm-none"></a>
+        {% if app.user %}
+        <a href="{{ path('account_logout') }}" class="btn btn-secondary fa fa-sign-out float-right  d-block d-sm-none"></a>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
 
@@ -46,7 +53,7 @@
 {{ parent() }}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    $("#up").hide();
+    //$("#up").hide();
     click = 0;
     function loadMoreFigures(event) {
         event.preventDefault();

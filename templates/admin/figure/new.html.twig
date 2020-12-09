@@ -2,7 +2,7 @@
 
 {% block title %}Snowtricks - Création d'une figure{% endblock %}
 
-{% form_theme form _self %}
+{% form_theme form 'admin/figure/_collection.html.twig' %}
 
 {% block body %}
 <div class="container">
@@ -19,123 +19,13 @@
 </div>
 {% endblock %}
 
-{% block _figure_pictures_widget %}
-    <p>Ajouter les photos qui décrivent bien la figure ici</p>
-    {{form_widget(form)}}
-    <input type="hidden" id="widgets-counter" value="0">
-
-    <button type="button" id="add-picture" class="btn btn-primary">Ajouter une photo</button>
-{% endblock %}
-
-{% block _figure_pictures_entry_row %}
-    {{form_widget(form)}}
-{% endblock %}
-
-{% block _figure_pictures_entry_widget %}
-    <div class="form-group" id="block_{{id}}">
-        <div class="row">
-            <div class="col-10">
-                <div class="row">
-                    <div class="col">
-                        {{ form_widget(form.name) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(form.caption) }}
-                    </div>
-                </div>            
-            </div>
-            <div class="col-2">
-            <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
-            </div>      
-        </div>
-    </div>
-{% endblock %}
-
-
-{# --Videos-- #}
-{% block _figure_videos_widget %}
-    <p>Ajouter les viéos liées à la figure ici</p>
-    {{form_widget(form)}}
-    <input type="hidden" id="widgets-video-counter" value="0">
-
-    <button type="button" id="add-video" class="btn btn-warning">Ajouter une vidéo</button>
-{% endblock %}
-
-{% block _figure_videos_entry_row %}
-    {{form_widget(form)}}
-{% endblock %}
-
-{% block _figure_videos_entry_widget %}
-    <div class="form-group" id="block_{{id}}">
-        <div class="row">
-            <div class="col-10">
-                <div class="row">
-                    <div class="col">
-                        {{ form_widget(form.url) }}
-                    </div>
-                </div>            
-            </div>
-            <div class="col-2">
-            <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
-            </div>      
-        </div>
-    </div>
-{% endblock %}
-
 {% block javascripts %}
-<script>
-        $('#add-picture').click(function(){
-            //Calculer le numéro du futur champ à créer
-            const index = +$('#widgets-counter').val();
-            
-            //Récupérer le prototype/le code html d'une entrée
-            const tmpl = $('#figure_pictures').data('prototype').replace(/__name__/g, index);
 
-            //Injecter ce doe html dans la div add_images
-            $('#figure_pictures').append(tmpl);
-
-            $('#widgets-counter').val(index + 1);
-            //On gère le bouton supprimer
-            handleDeleteButtons();            
-        });
-
-        function handleDeleteButtons()
-        {
-            $('button[data-action="delete"]').click(function(){
-                const target = this.dataset.target;
-                $(target).remove();
-            });
-        }
-
-        handleDeleteButtons();
-    </script>
+{# --Pictures-- #}
+<script src="/js/figure-picture.js"></script>
 
 {# --Videos-- #}
-    <script>
-        $('#add-video').click(function(){
-            //Calculer le numéro du futur champ à créer
-            const index = +$('#widgets-video-counter').val();
-            
-            //Récupérer le prototype/le code html d'une entrée
-            const tmpl = $('#figure_videos').data('prototype').replace(/__name__/g, index);
-
-            //Injecter ce doe html dans la div add_images
-            $('#figure_videos').append(tmpl);
-
-            $('#widgets-video-counter').val(index + 1);
-            //On gère le bouton supprimer
-            handleDeleteButtons();            
-        });
-
-        function handleDeleteButtons()
-        {
-            $('button[data-action="delete"]').click(function(){
-                const target = this.dataset.target;
-                $(target).remove();
-            });
-        }
-
-        handleDeleteButtons();
-    </script>
+<script src="/js/figure-video.js"></script>
+  
 {% endblock %}
 

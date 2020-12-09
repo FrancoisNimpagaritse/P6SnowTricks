@@ -29,7 +29,7 @@
                         
                         <a href="{{ path('figure_show', {'slug': figure.slug})}}">{{figure.name}}</a>
                         <a href="{{ path('figure_edit', {'slug': figure.slug})}}"><img src="{{ asset('images/pencil.png') }}" alt="Modifier"></a>
-                        <a href="{{ path('figure_delete', {'slug': figure.slug}) }}"><img src="{{ asset('images/trash.png') }}" alt="Supprimer" onclick="return confirm(`Voulez vous réellement supprimer la figure : {{figure.name}} ?`)"></a>                        
+                        <a href="{{ path('figure_delete', {'slug': figure.slug}) }}"><img src="{{ asset('images/trash.png') }}" alt="Supprimer" onclick="return confirm(`Voulez vous réellement supprimer la figure : {{figure.name}} ?`)"></a>
                     </div>
                 </div>
             </div>

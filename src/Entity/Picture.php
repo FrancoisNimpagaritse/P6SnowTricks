@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
@@ -18,12 +19,14 @@ class Picture
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255)     * 
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="La légende est obligatoire !")
+     * @Assert\Length(min=3, minMessage="La légende doit faure aumoins 5 caractères !")
      */
     private $caption;
 

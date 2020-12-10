@@ -85,7 +85,7 @@ class AccountController extends AbstractController
             //On crée le message et on envoie le mail
             $email = (new Email())
             //On renseigne l'expéditeur
-                    ->from('franimpa@yahoo.fr')
+                    ->from('support@franimpa.fr')
             //On renseigne le destinataire
                     ->to($user->getEmail())
             //On renseigne l'objet
@@ -247,7 +247,7 @@ class AccountController extends AbstractController
             //On envoie le message
             //2. On envoie le mail
             $email = (new Email())
-                    ->from('franimpa@yahoo.fr')
+                    ->from('support@franimpa.fr')
                     ->to($user->getEmail())
                     ->subject('Mot de passe oublié')
                     ->text('Une demande de réinitialisation du mot de passe a été effectuée 

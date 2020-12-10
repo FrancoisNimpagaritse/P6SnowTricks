@@ -2,14 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\FigureRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FigureRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ * fields={"name"},
+ * message="Une autre figure possède déjà ce nom, merci de choisir un nom différent!"
+ * )
  */
 class Figure
 {
@@ -22,6 +30,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Le nom est obligatoire !")
      */
     private $name;
 
@@ -32,6 +41,7 @@ class Figure
     
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Le nom est obligatoire !")
      */
     private $description;
 
@@ -47,11 +57,13 @@ class Figure
 
     /**
      * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="figure", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $pictures;
 
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="figure", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $videos;
 
@@ -72,8 +84,36 @@ class Figure
      */
     private $author;
 
-    public function __construct()
+    /**
+     * Initialize creation/update date
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function initializeUpdateDate()
     {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Generate slug if not present
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function intializeSlug()
+    {
+        if (empty($this->slug)) {
+            $this->slug = $this->slugger->slug($this->name)->lower();
+        }
+    }
+
+    //For generating the slug
+    protected $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
         $this->pictures = new ArrayCollection();
         $this->videos = new ArrayCollection();
         $this->messages = new ArrayCollection();

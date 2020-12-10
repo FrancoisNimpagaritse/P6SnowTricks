@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - Edition d'une figure{% endblock %}
+
+{% form_theme form 'admin/figure/_collection.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 mt-3 pb-3 bg-light rounded">
+            <h1 class="m-3 pb-3 text-center">Modification de: {{figure.name}}</h1>
+            {{form_start(form)}}
+            {{form_widget(form)}}
+            <button type="submit" class="btn btn-success rounded">Enregistrer les modifications</button>
+            {{form_end(form)}}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+
+{# --Pictures-- #}
+<script src="/js/figure-picture.js"></script>
+
+{# --Videos-- #}
+<script src="/js/figure-video.js"></script>
+  
+{% endblock %}

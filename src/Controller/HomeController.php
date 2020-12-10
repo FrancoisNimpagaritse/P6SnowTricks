@@ -27,10 +27,26 @@ class HomeController extends AbstractController
      */
     public function index(FigureRepository $repo)
     {
-        $figures = $repo->findAll();
-
+        // Get 15 figures from position 0
+        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 15, 0);
+        
         return $this->render('home/index.html.twig', [
             'figures' => $figures,
+        ]);
+    }
+
+    /**
+     * Afficher encore 15 autres figures
+     * @Route("/{start}", name="loadMoreFigures", requirements={"start": "\d+"})
+     * 
+     * @return Response
+     */
+    public function loadMoreFigures(FigureRepository $repo, $start = 15)
+    {
+        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 15, $start);
+
+        return $this->render('home/loadMoreFigures.html.twig', [
+            'figures' => $figures
         ]);
     }
 
@@ -45,8 +61,8 @@ class HomeController extends AbstractController
     {
         $msg = new Message();
         $messages = $repoMsg->findBy(['figure' => $figure->getId()], ['createdAt' => 'DESC']);
-        $images = $repoPic->findAll();
-
+        $pictures = $repoPic->findBy(['figure' => $figure]);
+        
         $form = $this->createForm(MessageType::class, $msg);
         $form->handleRequest($request);
 
@@ -65,7 +81,7 @@ class HomeController extends AbstractController
             'figure' => $figure,
             'messages' => $messages,
             'form'  => $form->createView(),
-            'images' => $images
+            'pictures' => $pictures
         ]);
     }
 }

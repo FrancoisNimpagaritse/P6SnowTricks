@@ -27,7 +27,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class AccountController extends AbstractController
 {
     /**
-     * Permet d'affichee et de gérer le formulaire de connexion
+     * Permet d'afficher et de gérer le formulaire de connexion
      * 
      * @Route("/login", name="account_login")
      * 

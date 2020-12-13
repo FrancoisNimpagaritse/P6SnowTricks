@@ -16,7 +16,7 @@
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Catégorie</th>
-                <th>Image principale</th>
+                <th>Auteur</th>
                 <th>Dernière mis à jour</th>
                 <th>Nombre d'images</td>
                 <th>Nombre de vidéos</td>
@@ -29,10 +29,10 @@
                 <td>{{figure.id}}</td>
                 <td>{{figure.name}}</td>
                 <td>{{figure.category.name}}</td>
-                <td>{{figure.mainImage}}</td>
+                <td><img src="{{ asset('images/' ~ figure.author.imageName) }}" class="avatar avatar-micro mr-2" alt="photo-auteur">{{figure.author.firstname}} {{figure.author.lastname}}</td>
                 <td>{{figure.updatedAt |date("d/m/Y")}}</td>
-                <td><span class="badge badge-primary rounded">{{figure.pictures | length}}</span></td>
-                <td><span class="badge badge-info rounded">{{figure.videos | length}}</span></td>
+                <td class="text-center"><span class="badge badge-primary rounded">{{figure.pictures | length}}</span></td>
+                <td  class="text-center"><span class="badge badge-info rounded">{{figure.videos | length}}</span></td>
                 <td>
                     <a href="{{ path('figure_edit', {'slug': figure.slug}) }}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
                     <a href="#" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>

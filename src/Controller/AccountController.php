@@ -7,6 +7,7 @@ use App\Form\AccountType;
 use App\Form\ResetPassType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Service\ImageUploader;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
@@ -18,8 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Proxies\__CG__\App\Entity\User as EntityUser;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
@@ -63,7 +64,7 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
+    public function register(Request $request, ImageUploader $uploader, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
     {
         $user = new User();
 
@@ -71,6 +72,14 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadImageName = $form->get('imgName')->getData();
+
+            if ($uploadImageName) {
+                $newImageFilename = $uploader->upload($uploadImageName);
+                //On renseigne le nom qui sera en BD
+                $user->setImageName($newImageFilename);
+            }
+
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $user->setUpdatedAt(new \DateTime());

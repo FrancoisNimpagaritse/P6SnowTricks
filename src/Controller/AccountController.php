@@ -125,13 +125,21 @@ class AccountController extends AbstractController
      * 
      * @return response
      */
-    public function profile(Request $request, EntityManagerInterface $manager)
+    public function profile(Request $request, ImageUploader $uploader, EntityManagerInterface $manager)
     {
         $user = $this->getUser();
         $form = $this->createForm(AccountType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadImageName = $form->get('imgName')->getData();
+
+            if ($uploadImageName) {
+                $newImageFilename = $uploader->upload($uploadImageName);
+                //On renseigne le nom qui sera en BD
+                $user->setImageName($newImageFilename);
+            }
+            
             $manager->persist($user);
             $manager->flush();
 

@@ -24,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 
 class AccountController extends AbstractController
 {
@@ -38,9 +39,14 @@ class AccountController extends AbstractController
     {
         $error = $authUtils->getLastAuthenticationError();
         $username = $authUtils->getLastUsername();
+        $customMessage = null;
+        if ($error instanceof CustomUserMessageAccountStatusException) {
+            $customMessage = $error->getMessage();
+        }
 
         return $this->render('account/login.html.twig', [
             'hasError'  =>  $error != null,
+            'customMessage'    =>   $customMessage ? $customMessage: null,
             'username' =>  $username
         ]);
     }

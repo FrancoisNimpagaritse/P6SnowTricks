@@ -19,9 +19,15 @@
                 <h1 class="text-center">Connexion !</h1>
                 <hr>
                 {% if hasError %}
-                    <div class="alert alert-danger">
+                    {% if customMessage %}              
+                    <div class="alert alert-warning">                    
+                        {{customMessage}}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger">                    
                         Une erreur est survenue, l'email ou le mot de passe est invalide !
                     </div>
+                    {% endif %}
                 {% endif %}
                 <form class="well" id="login" action="{{ path('account_login') }}" method="post">
                     <div class="form-group">

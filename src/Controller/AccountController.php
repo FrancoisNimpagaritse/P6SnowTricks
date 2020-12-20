@@ -7,6 +7,7 @@ use App\Form\AccountType;
 use App\Form\ResetPassType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
+use App\Service\ImageUploader;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
@@ -18,16 +19,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Proxies\__CG__\App\Entity\User as EntityUser;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 
 class AccountController extends AbstractController
 {
     /**
-     * Permet d'affichee et de gérer le formulaire de connexion
+     * Permet d'afficher et de gérer le formulaire de connexion
      * 
      * @Route("/login", name="account_login")
      * 
@@ -37,9 +39,14 @@ class AccountController extends AbstractController
     {
         $error = $authUtils->getLastAuthenticationError();
         $username = $authUtils->getLastUsername();
+        $customMessage = null;
+        if ($error instanceof CustomUserMessageAccountStatusException) {
+            $customMessage = $error->getMessage();
+        }
 
         return $this->render('account/login.html.twig', [
             'hasError'  =>  $error != null,
+            'customMessage'    =>   $customMessage ? $customMessage: null,
             'username' =>  $username
         ]);
     }
@@ -63,7 +70,7 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
+    public function register(Request $request, ImageUploader $uploader, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
     {
         $user = new User();
 
@@ -71,6 +78,14 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadImageName = $form->get('imgName')->getData();
+
+            if ($uploadImageName) {
+                $newImageFilename = $uploader->upload($uploadImageName);
+                //On renseigne le nom qui sera en BD
+                $user->setImageName($newImageFilename);
+            }
+
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $user->setUpdatedAt(new \DateTime());
@@ -116,13 +131,21 @@ class AccountController extends AbstractController
      * 
      * @return response
      */
-    public function profile(Request $request, EntityManagerInterface $manager)
+    public function profile(Request $request, ImageUploader $uploader, EntityManagerInterface $manager)
     {
         $user = $this->getUser();
         $form = $this->createForm(AccountType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadImageName = $form->get('imgName')->getData();
+
+            if ($uploadImageName) {
+                $newImageFilename = $uploader->upload($uploadImageName);
+                //On renseigne le nom qui sera en BD
+                $user->setImageName($newImageFilename);
+            }
+            
             $manager->persist($user);
             $manager->flush();
 

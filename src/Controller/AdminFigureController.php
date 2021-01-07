@@ -26,7 +26,7 @@ class AdminFigureController extends AbstractController
      * 
      * @return Response
      */
-    public function index(FigureRepository $repo, $page, Paginator $paginator): Response
+    public function index($page, Paginator $paginator): Response
     {
         $paginator->setEntityClass(Figure::class)
                 ->setPage($page);
@@ -54,8 +54,6 @@ class AdminFigureController extends AbstractController
         //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
 
-          //dd($form->get('pictures')->getData());
-            //dd($request->files->get('figure')['pictures']);
             $i=0;
            
             foreach($figure->getPictures() as $picture)

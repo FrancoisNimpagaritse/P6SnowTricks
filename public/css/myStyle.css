@@ -1,5 +1,5 @@
 .navbar-item-custom, .navbar-item-custom a {
-  color:white;
+  color: white;
 }
 
 .custom-file-input {
@@ -10,7 +10,7 @@
 
 .img-carousel {
   max-width: 240px;
-  max-height: 200px; 
+  max-height: 200px;  
 }
 
 .avatar {
@@ -18,11 +18,11 @@
 }
 
 .avatar-medium {
-  max-width : 36px;
+  max-width: 36px;
   max-height: 36px;
 }
 
 .avatar-micro {
-  max-width : 24px;
+  max-width: 24px;
   max-height: 24px;
 }

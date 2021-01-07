@@ -58,7 +58,7 @@ class HomeController extends AbstractController
      * 
      * @return Response
      */
-    public function show(Figure $figure, $page, Paginator $paginator, PictureRepository $repoPic, MessageRepository $repoMsg, Request $request, EntityManagerInterface $manager)
+    public function show(Figure $figure, $page, Paginator $paginator, PictureRepository $repoPic, Request $request, EntityManagerInterface $manager)
     {
         $msg = new Message();
         $paginator->setEntityClass(Message::class)

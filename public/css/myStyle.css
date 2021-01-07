@@ -1,34 +1,28 @@
-.navbar-item-custom, .navbar-item-custom a
-{
-    color:white;
+.navbar-item-custom, .navbar-item-custom a {
+   color:white;
 }
 
-.custom-file-input
-{
+.custom-file-input {
     background-color: aliceblue;
     color: brown;
     text-align: center;
 }
 
-.img-carousel
-{
+.img-carousel {
     max-width: 240px;
     max-height: 200px; 
 }
 
-.avatar
-{
+.avatar {
     border-radius: 50%;
 }
 
-.avatar-medium
-{
+.avatar-medium {
     max-width : 36px;
     max-height: 36px;
 }
 
-.avatar-micro
-{
+.avatar-micro {
     max-width : 24px;
     max-height: 24px;
 }

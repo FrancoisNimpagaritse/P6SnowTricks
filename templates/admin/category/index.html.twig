@@ -27,8 +27,8 @@
                 <td>{{cat.name}}</td>
                 <td><span class="badge badge-primary rounded">{{cat.figures | length}}</span></td>
                 <td>
-                    <a href="{#{ path('cat_edit', {'id': cat.id}) }#}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                    <a href="{{ path('admin_categories_edit', {'id': cat.id}) }}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
+                    <a href="{{ path('admin_categories_delete', {'id': cat.id}) }}" class="btn btn-danger rounded" onclick="return confirm(`Voulez vous réellement supprimer la catégorie : {{cat.name}} ?`)"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
             {% endfor %}

@@ -8,8 +8,14 @@
         <div class="bg-primary text-white rounded">   
             <h1 class="text-center my-3"> Détails de la figure : {{figure.name}}</h1>
         </div>    
-        <div class="card bg-light mb-3 rounded">        
-            <img src="{{ asset('images/' ~ figure.mainImage)}}" alt="main-image">
+        <div class="card bg-light mb-3 rounded">
+            <div class="row text-center mt-3">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <img src="{{ asset('images/' ~ figure.mainImage)}}"  class="text-center rounded" height="480px" width="640px" alt="main-image">
+                </div>
+
+            </div>
             <div class="card-body text-center">
                 
                 <p class="card-text ">
@@ -20,7 +26,7 @@
                         <div class="row">
                         {% for picture in pictures %}
                                 <div class="col-xs-12 col-sm-6 col-md-3 mt-3">
-                                    <img src="{{ asset('images/' ~ picture.name)}}" class="img-carousel" alt="{{picture.caption}}">
+                                    <img src="{{ asset('images/' ~ picture.name)}}" class="img-carousel rounded" alt="{{picture.caption}}">
                                     <div class="d-none d-md-block">
                                         <h5>{{picture.caption}}</h5>                                
                                     </div>
@@ -56,6 +62,7 @@
             </div>
         </div>
     </div>
+    {% if app.user %}
     <div class="container ">        
         {{form_start(form)}}
         <div class="row align-items-center">
@@ -69,6 +76,7 @@
         </div>
         {{form_end(form)}}            
     </div>
+    {% endif %}
     <div class="container">
     {% if (figure.messages | length) > 0 %}
     <h4 class="text-center">Commentaires sur la figure</h4>
@@ -91,6 +99,21 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item {% if page == 1 %} disabled {% endif %}">
+            <a class="page-link" href="{{ path('figure_show', {'slug': figure.slug, 'page': page - 1}) }}">&laquo;</a>
+            </li>
+            {% for i in 1..pages %}
+            <li class="page-item {% if page == i %} active {% endif %}">
+            <a class="page-link" href="{{ path('figure_show', {'slug': figure.slug, 'page': i}) }}">{{ i }}</a>
+            </li>                
+            {% endfor %}
+            <li class="page-item {% if page == pages %} disabled {% endif %}">
+            <a class="page-link" href="{{ path('figure_show', {'slug': figure.slug, 'page': page + 1}) }}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
     {% else %}
     <p><strong>Il n'y a pas encore de commentaires pour cette figure.</strong>
     {% endif %}

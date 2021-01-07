@@ -25,8 +25,7 @@
                 <div class="card bg-light mb-3 rounded">
                                     
                     <img src="{{ asset('images/' ~ figure.mainImage)}}" alt="main-image" height="300px" width="270px" class="card-img">
-                    <div class="card-body text-center">                         
-                        
+                    <div class="card-body text-center">                        
                         <a href="{{ path('figure_show', {'slug': figure.slug})}}">{{figure.name}}</a>
                         <a href="{{ path('figure_edit', {'slug': figure.slug})}}"><img src="{{ asset('images/pencil.png') }}" alt="Modifier"></a>
                         <a href="{{ path('figure_delete', {'slug': figure.slug}) }}"><img src="{{ asset('images/trash.png') }}" alt="Supprimer" onclick="return confirm(`Voulez vous réellement supprimer la figure : {{figure.name}} ?`)"></a>

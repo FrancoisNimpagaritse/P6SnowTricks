@@ -82,7 +82,7 @@ class AdminFigureController extends AbstractController
             $figure->setAuthor($this->getUser());
             
             //On récupère le fichier de l'image principale
-            $uploadMainFile = $form->get('mainImg')->getData();   
+            $uploadMainFile = $form->get('mainImg')->getData();
             
             if ($uploadMainFile) {
                 $newMainPictureFilename = $uploader->upload($uploadMainFile);
@@ -116,7 +116,7 @@ class AdminFigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid()) {            
+        if ($form->isSubmitted() && $form->isValid()) {
             $i=0;
             foreach($figure->getPictures() as $picture)
             {                

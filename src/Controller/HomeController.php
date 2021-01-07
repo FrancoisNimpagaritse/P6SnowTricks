@@ -63,14 +63,6 @@ class HomeController extends AbstractController
         $msg = new Message();
         $paginator->setEntityClass(Message::class)
                   ->setPage($page);
-        
-        /*$messages = $paginator->getData(['figure' => $figure->getId()]);
-        //dd($messages);
-        /* $limit = 1;
-        $start = $page * $limit - $limit;
-        $messages = $repoMsg->findBy(['figure' => $figure->getId()], ['createdAt' => 'DESC'], $limit, $start); 
-        $total = count($repoMsg->findBy(['figure' => $figure->getId()], [])); 
-        $pages = $paginator->getPages(['figure' => $figure->getId()]); */
 
         $pictures = $repoPic->findBy(['figure' => $figure]); 
         

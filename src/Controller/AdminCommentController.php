@@ -15,9 +15,8 @@ class AdminCommentController extends AbstractController
     /**
      * @Route("/admin/comments/{page<\d+>?1}", name="admin_comments_index")
      */
-    public function index(MessageRepository $repo, $page, Paginator $paginator): Response
+    public function index($page, Paginator $paginator): Response
     {
-        //$comments = $repo->findAll(); supprimer et le repo
         $paginator->setEntityClass(Message::class)
                 ->setPage($page);
 

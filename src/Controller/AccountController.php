@@ -275,7 +275,7 @@ class AccountController extends AbstractController
                     ->subject('Mot de passe oublié')
                     ->text('Une demande de réinitialisation du mot de passe a été effectuée 
                     pour le site snowtricks.franimpa.fr, veuillez cliquer sur le lien
-                    suivant : ' . $url );                    
+                    suivant : ' . $url );
                   
             $mailer->send($email);
 

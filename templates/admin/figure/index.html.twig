@@ -28,18 +28,34 @@
             <tr>
                 <td>{{figure.id}}</td>
                 <td>{{figure.name}}</td>
-                <td>{{figure.category.name}}</td>
-                <td><img src="{{ asset('images/' ~ figure.author.imageName) }}" class="avatar avatar-micro mr-2" alt="photo-auteur">{{figure.author.firstname}} {{figure.author.lastname}}</td>
+                <td>{{figure.category.name}}</td>                
+                <td>                
+                    <img src="{{ asset('images/' ~ figure.author.imageName) }}" class="avatar avatar-micro mr-2" alt="{{figure.author.firstname}}">{{figure.author.firstname}} {{figure.author.lastname}}</td>
                 <td>{{figure.updatedAt |date("d/m/Y")}}</td>
                 <td class="text-center"><span class="badge badge-primary rounded">{{figure.pictures | length}}</span></td>
                 <td  class="text-center"><span class="badge badge-info rounded">{{figure.videos | length}}</span></td>
                 <td>
                     <a href="{{ path('figure_edit', {'slug': figure.slug}) }}" class="btn btn-warning rounded"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
+                    <a href="{{ path('figure_delete', {'slug': figure.slug}) }}" class="btn btn-danger rounded"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item {% if page == 1 %} disabled {% endif %}">
+            <a class="page-link" href="{{ path('admin_figures_index', {'page': page - 1}) }}">&laquo;</a>
+            </li>
+            {% for i in 1..pages %}
+            <li class="page-item {% if page == i %} active {% endif %}">
+            <a class="page-link" href="{{ path('admin_figures_index', {'page': i}) }}">{{ i }}</a>
+            </li>                
+            {% endfor %}
+            <li class="page-item {% if page == pages %} disabled {% endif %}">
+            <a class="page-link" href="{{ path('admin_figures_index', {'page': page + 1}) }}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
 </div>
 {% endblock %}

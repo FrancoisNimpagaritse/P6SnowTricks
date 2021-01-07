@@ -9,6 +9,7 @@ use App\Form\MessageType;
 use App\Repository\FigureRepository;
 use App\Repository\MessageRepository;
 use App\Repository\PictureRepository;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,15 +54,25 @@ class HomeController extends AbstractController
     /**
      * Permet d'afficher les détails d'une figure
      * 
-     * @Route("figure/show/{slug}", name="figure_show")
+     * @Route("figure/show/{slug}/{page<\d+>?1}", name="figure_show")
      * 
      * @return Response
      */
-    public function show(Figure $figure, PictureRepository $repoPic, MessageRepository $repoMsg, Request $request, EntityManagerInterface $manager)
+    public function show(Figure $figure, $page, Paginator $paginator, PictureRepository $repoPic, MessageRepository $repoMsg, Request $request, EntityManagerInterface $manager)
     {
         $msg = new Message();
-        $messages = $repoMsg->findBy(['figure' => $figure->getId()], ['createdAt' => 'DESC']);
-        $pictures = $repoPic->findBy(['figure' => $figure]);
+        $paginator->setEntityClass(Message::class)
+                  ->setPage($page);
+        
+        /*$messages = $paginator->getData(['figure' => $figure->getId()]);
+        //dd($messages);
+        /* $limit = 1;
+        $start = $page * $limit - $limit;
+        $messages = $repoMsg->findBy(['figure' => $figure->getId()], ['createdAt' => 'DESC'], $limit, $start); 
+        $total = count($repoMsg->findBy(['figure' => $figure->getId()], [])); 
+        $pages = $paginator->getPages(['figure' => $figure->getId()]); */
+
+        $pictures = $repoPic->findBy(['figure' => $figure]); 
         
         $form = $this->createForm(MessageType::class, $msg);
         $form->handleRequest($request);
@@ -79,9 +90,11 @@ class HomeController extends AbstractController
 
         return $this->render('home/show.html.twig', [
             'figure' => $figure,
-            'messages' => $messages,
+            'messages' => $paginator->getData(['figure' => $figure->getId()]),
             'form'  => $form->createView(),
-            'pictures' => $pictures
+            'pictures' => $pictures,
+            'pages' => $paginator->getPages(['figure' => $figure->getId()]),
+            'page'  => $page
         ]);
     }
 }

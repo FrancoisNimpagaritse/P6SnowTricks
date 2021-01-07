@@ -7,6 +7,7 @@ use App\Entity\Picture;
 use App\Form\FigureType;
 use App\Service\ImageUploader;
 use App\Repository\FigureRepository;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,17 +21,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminFigureController extends AbstractController
 {
     /**
-     * Permet d'accéder à la liste de figure pour les administrer
-     * @Route("/admin/figures", name="figures_index")
+     * Permet d'accéder à la liste de figure pour les administrer     * 
+     * @Route("/admin/figures/{page<\d+>?1}", name="admin_figures_index")
      * 
      * @return Response
      */
-    public function index(FigureRepository $repo): Response
+    public function index(FigureRepository $repo, $page, Paginator $paginator): Response
     {
-        $figures = $repo->findAll();
+        $paginator->setEntityClass(Figure::class)
+                ->setPage($page);
 
         return $this->render('admin/figure/index.html.twig', [
-            'figures' => $figures
+            'figures' =>  $paginator->getData(),
+            'pages' => $paginator->getPages(),
+            'page'  => $page
         ]);
     }
 
@@ -162,7 +166,7 @@ class AdminFigureController extends AbstractController
     /**
      * Permet de supprimer une figure , ses images et ses vidéos
      * @Route("/figure/delete/{slug}", name="figure_delete")
-     * @Security("is_granted('ROLE_USER') and user === figure.getAuthor()",
+     * @Security("is_granted('ROLE_USER') and user === figure.getAuthor() or is_granted('ROLE_ADMIN') ",
      * message="Cette figure ne vous appartient pas, vous ne pouvez pas la supprimer !")
      */
     public function delete(Figure $figure, EntityManagerInterface $manager)

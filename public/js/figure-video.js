@@ -1,14 +1,14 @@
-$('#add-video').click(function(){
+$("#add-video").click(function(){
     //Calculer le numéro du futur champ à créer
-    const index = +$('#widgets-video-counter').val();
+    const index = +$("#widgets-video-counter").val();
     
     //Récupérer le prototype/le code html d'une entrée
-    const tmpl = $('#figure_videos').data('prototype').replace(/__name__/g, index);
+    const tmpl = $("#figure_videos").data('prototype').replace(/__name__/g, index);
 
     //Injecter ce doe html dans la div add_images
-    $('#figure_videos').append(tmpl);
+    $("#figure_videos").append(tmpl);
 
-    $('#widgets-video-counter').val(index + 1);
+    $("#widgets-video-counter").val(index + 1);
     //On gère le bouton supprimer
     handleDeleteButtons();            
 });
@@ -23,8 +23,8 @@ function handleDeleteButtons()
 
 function updateCounter()
 {
-    const count = +$('#figure_videos div.form-group').length;
-     $('#widgets-counter').val(count);
+    const count = +$("#figure_videos div.form-group").length;
+     $("#widgets-counter").val(count);
 }
 
 updateCounter();

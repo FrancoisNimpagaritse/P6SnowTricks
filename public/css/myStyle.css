@@ -1,4 +1,5 @@
-.navbar-item-custom, .navbar-item-custom a {
+.navbar-item-custom,
+.navbar-item-custom a {
   color: white;
 }
 
@@ -10,7 +11,7 @@
 
 .img-carousel {
   max-width: 240px;
-  max-height: 200px;  
+  max-height: 200px;
 }
 
 .avatar {

@@ -5,14 +5,9 @@ Dans mon parcours de Développeur d'application PHP/Symfony chez OpenClassrooms 
 Informations sur l'environnement et outils utilisés durant le développement
 --------------------------------------------------------------------------- 
 * Symfony 5.1
-* Composer 2.0
-* Bootstrap 4.2.1
-* jQuery 3.3.1
+* PHP 7.2.8
 * PHPUnit 8.5
-* Xampp 3.1.6
- > Apache 2.4.37
- > PHP 7.2.8
- > MySQL 5.7.19 
+* MySQL 5.7.19 
 
 Installation
 -------------- 

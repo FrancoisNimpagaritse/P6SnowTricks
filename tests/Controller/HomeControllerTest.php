@@ -9,5 +9,6 @@ class HomeControllerTest extends TestCase
     public function testHomaPage()
     {
         $this->assertSame(2, 1+1);
+        $this->assertEquals(2, "1+1");
     }
 }

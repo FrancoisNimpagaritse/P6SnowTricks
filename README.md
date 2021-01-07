@@ -1,6 +1,8 @@
 Projet 6 - Développez de A à Z le site communautaire SnowTricks
 ===============================================================
-Dans mon parcours de Développeur d'application PHP/Symfony chez OpenClassrooms j'ai créé une application avec lle framework Symfony. 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/24c0f26e4cae43d9869199013aa173f2)](https://www.codacy.com/gh/FrancoisNimpagaritse/P6SnowTricks/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FrancoisNimpagaritse/P6SnowTricks&amp;utm_campaign=Badge_Grade)
+
+Dans mon parcours de Développeur d'application PHP/Symfony chez OpenClassrooms j'ai créé une application d'un site communautaire de partage de figures de snowboard avec le framework Symfony. 
 
 Informations sur l'environnement et outils utilisés durant le développement
 --------------------------------------------------------------------------- 

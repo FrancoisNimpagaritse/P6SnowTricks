@@ -66,7 +66,7 @@ class AdminCategoryController extends AbstractController
 
             $this->addFlash('succes', 'La catégorie <strong>' . $category->getName() . '</strong> a été ajoutée avec succès !');
 
-            return $this->redirectToRoute('admin_categories_index');            
+            return $this->redirectToRoute('admin_categories_index');
         }
 
         return $this->render('admin/category/edit.html.twig', [

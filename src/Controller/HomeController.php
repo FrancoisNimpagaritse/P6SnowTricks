@@ -28,11 +28,12 @@ class HomeController extends AbstractController
      */
     public function index(FigureRepository $repo)
     {
-        // Get 15 figures from position 0
-        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 15, 0);
-        
+        // Get 6 figures from position 0
+        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 6, 0);
+        $nbrFigures = count($repo->findAll());
         return $this->render('home/index.html.twig', [
             'figures' => $figures,
+            'nbrFigures' => $nbrFigures
         ]);
     }
 
@@ -42,10 +43,11 @@ class HomeController extends AbstractController
      * 
      * @return Response
      */
-    public function loadMoreFigures(FigureRepository $repo, $start = 15)
+    public function loadMoreFigures(FigureRepository $repo, $start = 6)
     {
-        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 15, $start);
-
+        $figures = $repo->findBy([], ['updatedAt' => 'DESC'], 6, $start);
+        
+        //dd($nbrFigures);
         return $this->render('home/loadMoreFigures.html.twig', [
             'figures' => $figures
         ]);

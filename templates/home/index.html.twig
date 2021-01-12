@@ -34,11 +34,11 @@
             </div>
         {% endfor %}
     </div>
-
+    <input type="hidden" id="nbrFigures" name="nbrFigrs" value={{nbrFigures}}>
     <div class="text-center">
         <button href="" id="loadMoreFigures" class=" btn btn-primary rounded">Afficher plus...</button>
         <a href="#up" id="down" class="btn btn-primary fa fa-arrow-up float-right d-none d-sm-block"></a>
-    </div>
+    </div>    
     <div class="d-block d-sm-none m-auto p-auto text-center">                          
         <a href="{{ path('homepage') }}" class="btn btn-secondary fa fa-home float-left  d-block d-sm-none"></a>
         {% if app.user %}
@@ -57,7 +57,14 @@
     function loadMoreFigures(event) {
         event.preventDefault();
         click++;
-        var start = 15 * click;
+        var start = 6 * click;
+        
+        //masquer le bouton au chargement total des figures;
+        var nbrFig = $("#nbrFigures").val();
+        if (start >= nbrFig) {
+            $("#loadMoreFigures").hide();
+        } 
+
         const url = "{{ path('loadMoreFigures') }}" + start;
         axios.get(url).then(function(response) {
             console.log(response);
@@ -73,7 +80,7 @@
             else {
                 window.alert("Une erreur est survenue !");
             }
-        });
+        });        
     }
     document.getElementById("loadMoreFigures").addEventListener("click", loadMoreFigures);
 </script>

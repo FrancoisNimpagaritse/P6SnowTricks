@@ -55,12 +55,6 @@
 
 {% block javascripts %}
 <script>
-    
-</script>
-{{ parent() }}
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-<script>
     $(document).ready(function(){
         $(".loading").on("click", function(){
             $(".loading-icon").removeClass("hide");
@@ -74,6 +68,11 @@
             }, 3000);
         });
     });
+</script>
+{{ parent() }}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>    
     //$("#up").hide();
     click = 0;
     function loadMoreFigures(event) {

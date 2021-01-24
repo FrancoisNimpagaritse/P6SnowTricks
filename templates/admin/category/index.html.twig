@@ -9,6 +9,11 @@
         <div class="col-md-8 bg-primary text-white rounded">   
             <h1>Les différentes catégories pour nos figures !</h1>
         </div>
+        <div class="col-md-3 text-center m-auto ">
+            {% if(app.user) %}
+                <a href="{{ path('admin_categories_create') }}" class="btn btn-success rounded">Ajouter une categorie</a>
+            {% endif %}
+        </div> 
     </div>
     <div style="height:3px;"></div>
     <table class="table table-bordered table-hover">

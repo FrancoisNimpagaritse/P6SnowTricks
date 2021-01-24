@@ -2,7 +2,7 @@
     <div class="col-md-4 col-sm-6 col-12">
         <div class="card bg-light mb-3 rounded">
                             
-            <img src="{{ asset('images/' ~ figure.mainImage) }}" alt="main-image" height="300px" width="270px" class="card-img">
+            <img src="{{ asset('images/' ~ figure.mainImage) }}" alt="main-image" height="300" width="270" class="card-img">
             <div class="card-body text-center">                         
                 
                 <a href="{{ path('figure_show', {'slug': figure.slug}) }}">{{figure.name}}</a>

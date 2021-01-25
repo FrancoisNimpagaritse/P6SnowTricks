@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Entity;
 
 use App\Entity\Category;
 use PHPUnit\Framework\TestCase;
 
-class AdminCategoryControllerTest extends TestCase
+class CategoryEntity extends TestCase
 {
     public function testCreateNewCategory()
     {

@@ -51,7 +51,7 @@ class AdminFigureController extends AbstractController
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
-        //dd($form->getData());
+        
         if ($form->isSubmitted() && $form->isValid()) {
 
             $i=0;

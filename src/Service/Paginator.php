@@ -14,8 +14,7 @@ class Paginator
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
-        
-    }    
+    }
 
     public function getData($figure = null)
     {

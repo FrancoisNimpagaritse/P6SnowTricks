@@ -19,8 +19,8 @@ DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteCond %{HTTP:HTTPS} !on
-    RewriteRule (.*) https://%{SERVER_NAME}/$1 [QSA,L,R=301]
+    # RewriteCond %{HTTP:HTTPS} !on
+    # RewriteRule (.*) https://%{SERVER_NAME}/$1 [QSA,L,R=301]
     
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the

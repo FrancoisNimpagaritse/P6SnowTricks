@@ -171,7 +171,7 @@ class AccountController extends AbstractController
 
         $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
         $form->handleRequest($request);
-        //Ve=érifier que le oldPassword du formulaire correspond au hash de li'utilisateur
+        //Vérifier que le oldPassword du formulaire correspond au hash de li'utilisateur
         if ($form->isSubmitted() && $form->isValid()) {
             if (!password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
                 //On gère l'erreur

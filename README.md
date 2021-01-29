@@ -6,23 +6,23 @@ Dans mon parcours de Développeur d'application PHP/Symfony chez OpenClassrooms 
 
 Informations sur l'environnement et outils utilisés durant le développement
 --------------------------------------------------------------------------- 
-* Symfony 5.1
 * PHP 7.2.8
-* PHPUnit 8.5
+* Symfony 5.1
 * MySQL 5.7.19 
+* PHPUnit 8.5
 
 Installation
 -------------- 
 
 1. Clonez ou téléchargez le repository GitHub dans le dossier voulu :
-    git clone https://github.com/sorha/P6-SnowTricks.git
-2. Configurez vos variables d'environnement tel que la connexion à la base de données ou votre serveur SMTP ou adresse mail dans le fichier .env.local qui devra être crée à la racine du projet en réalisant une copie du fichier .env.
+    git clone https://github.com/FrancoisNimpagaritse/P6SnowTricks
+2. Configurez vos variables d'environnement tel que la connexion à la base de données et votre serveur SMTP ou adresse mail dans le fichier .env.local qui devra être crée à la racine du projet en réalisant une copie du fichier .env.
 
 3. Téléchargez et installez les dépendances de l'application avec Composer :
 
     composer install
 
-4. Créez la base de données si elle n'existe pas déjà, taper la commande ci-dessous en vous plaçant dans le répertoire du projet :
+4. Créez la base de données et importez le fichier snowtricks.sql présent à la racine (dans ce cas sauter l'étape 5) ou, taper la commande ci-dessous en vous plaçant dans le répertoire du projet :
     php bin/console doctrine:database:create
     
 5. Créez les différentes tables de la base de données en appliquant les migrations :

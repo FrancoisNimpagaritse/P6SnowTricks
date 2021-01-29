@@ -20,8 +20,8 @@ class CategoryEntity extends TestCase
     public function NewCreatedCategoryReturnsEmptyFiguresArray()
     {
         $newCat = (new Category())
-                    ->setName("My new categorie");
+                ->setName("My new categorie");
                     
-        $this->assertEquals(null, $newCat->getFigures());       
-    }    
+        $this->assertEquals(null, $newCat->getFigures());
+    }
 }

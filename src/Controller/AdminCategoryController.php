@@ -61,7 +61,6 @@ class AdminCategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($category);
             $manager->flush();
 
             $this->addFlash('succes', 'La catégorie <strong>' . $category->getName() . '</strong> a été ajoutée avec succès !');

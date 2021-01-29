@@ -147,7 +147,6 @@ class AdminFigureController extends AbstractController
                 $figure->setMainImage($newMainPictureFilename);
             }
             
-            $manager->persist($figure);
             $manager->flush();
 
             $this->addFlash('success', 'La figure <strong>' . $figure->getName() . '</strong> , ses images ainsi que ses videos ont été modifiées avec succès !');

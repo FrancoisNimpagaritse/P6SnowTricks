@@ -5,7 +5,6 @@ namespace App\Tests\Entity;
 use App\Entity\Figure;
 use App\Entity\Category;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CategoryEntity extends TestCase
 {
@@ -24,5 +23,5 @@ class CategoryEntity extends TestCase
                     ->setName("My new categorie");
                     
         $this->assertEquals(null, $newCat->getFigures());       
-    }
+    }    
 }

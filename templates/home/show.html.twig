@@ -22,11 +22,11 @@
                     {{figure.name}}: {{figure.description}}
                 </p>
                <div class="row">
-                    <div class="col-md-6 col-x-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
                         <div class="row">
                         {% for picture in pictures %}
-                                <div class="col-xs-12 col-sm-6 col-md-3 mt-3">
-                                    <img src="{{ asset('images/' ~ picture.name)}}" class="img-carousel rounded" alt="{{picture.caption}}">
+                                <div class="col-12 col-sm-6 col-md-3 mt-3 ml-4">
+                                    <img src="{{ asset('images/' ~ picture.name)}}" class="img-carousel rounded mr-1" height="120" width="150" alt="{{picture.caption}}">
                                     <div class="d-none d-md-block">
                                         <h5>{{picture.caption}}</h5>                                
                                     </div>
@@ -38,8 +38,8 @@
                         <div class="mt-3">
                             <div class="row">
                                 {% for video in figure.videos %}
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 border border-grey">
-                                        <iframe id="video{{ video.id }}" width="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <div class="col-12 col-sm-6 col-md-3 col-lg-4 col-xl-3 border border-grey ml-4">
+                                        <iframe id="video{{ video.id }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" height="120" width="150" allowfullscreen></iframe>
                                     </div>
                                     <script>
                                         var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
